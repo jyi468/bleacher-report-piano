@@ -3,7 +3,7 @@ import Piano from "./components/piano/Piano";
 
 function App() {
   return (
-      <Piano />
+      <Piano start="C4" end="B4"/>
   );
 }
 
