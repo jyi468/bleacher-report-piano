@@ -2,20 +2,20 @@ import './App.css';
 
 function App() {
   return (
-      <ul className="set">
-          <li className="white b"></li>
-          <li className="black as"></li>
-          <li className="white a"></li>
-          <li className="black gs"></li>
-          <li className="white g"></li>
-          <li className="black fs"></li>
-          <li className="white f"></li>
-          <li className="white e"></li>
-          <li className="black ds"></li>
-          <li className="white d"></li>
-          <li className="black cs"></li>
-          <li className="white c"></li>
-      </ul>
+      <div className="piano">
+          <div className="white C"></div>
+          <div className="black C#"></div>
+          <div className="white D"></div>
+          <div className="black D#"></div>
+          <div className="white E"></div>
+          <div className="white F"></div>
+          <div className="black F#"></div>
+          <div className="white G"></div>
+          <div className="black G#"></div>
+          <div className="white A"></div>
+          <div className="black A#"></div>
+          <div className="white B"></div>
+      </div>
   );
 }
 
