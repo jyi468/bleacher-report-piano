@@ -6,3 +6,14 @@ body {
     margin: 0;
     background: #222
 }
+
+.app {
+    display: flex;
+}
+
+.pianoLog {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}

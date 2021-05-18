@@ -1,10 +1,19 @@
 import './App.css';
+import {NoteProvider} from './contexts/NoteContext';
 import Piano from "./components/piano/Piano";
+import Logger from './components/logger/Logger';
 
 function App() {
-  return (
-      <Piano start="C4" end="B4"/>
-  );
+    return (
+        <div className="app">
+            <div className="pianoLog">
+                <NoteProvider>
+                    <Piano start="C4" end="B4"/>
+                    <Logger/>
+                </NoteProvider>
+            </div>
+        </div>
+    );
 }
 
 export default App;
