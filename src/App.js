@@ -3,8 +3,12 @@ import './App.css';
 function App() {
   return (
       <div className="piano">
-          <div className="white C"></div>
-          <div className="black C#"></div>
+          <div className="key white C">
+              <h2 className="note">C</h2>
+          </div>
+          <div className="key black C#">
+              <h2 className="note">C#</h2>
+          </div>
           <div className="white D"></div>
           <div className="black D#"></div>
           <div className="white E"></div>
