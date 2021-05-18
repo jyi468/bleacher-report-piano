@@ -69,3 +69,7 @@
 .piano .key:last-child {
     border-radius: 0 5px 5px 5px
 }
+
+.invert {
+    filter: invert(75%);
+}
