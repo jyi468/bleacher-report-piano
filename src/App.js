@@ -1,5 +1,5 @@
 import './App.css';
-import {NoteProvider} from './contexts/NoteContext';
+import {NoteProvider} from './contexts/LoggerContext';
 import Piano from "./components/piano/Piano";
 import Logger from './components/logger/Logger';
 

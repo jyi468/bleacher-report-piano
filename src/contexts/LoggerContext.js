@@ -1,15 +1,15 @@
 import React, {useContext, createContext, useState} from 'react';
 
-const NoteContext = createContext(null);
+const LoggerContext = createContext(null);
 
 export const NoteProvider = ({children}) => {
     const [notes, setNotes] = useState([]);
     const [limit, setLimit] = useState(null);
     return (
-        <NoteContext.Provider value={{notes, setNotes, limit, setLimit}}>
+        <LoggerContext.Provider value={{notes, setNotes, limit, setLimit}}>
             {children}
-        </NoteContext.Provider>
+        </LoggerContext.Provider>
     )
 };
 
-export const useNoteContext = () => useContext(NoteContext);
+export const useLoggerContext = () => useContext(LoggerContext);

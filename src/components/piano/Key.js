@@ -1,12 +1,12 @@
 import './Piano.css';
 import React, {useEffect, useState} from 'react';
 import {hasAccidental} from '../../utils/noteUtils';
-import {useNoteContext} from '../../contexts/NoteContext';
+import {useLoggerContext} from '../../contexts/LoggerContext';
 
 const Key = ({note, octave}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
     const [invert, setInvert] = useState(false);
-    const {notes, setNotes, limit} = useNoteContext();
+    const {notes, setNotes, limit} = useLoggerContext();
 
     useEffect(() => {
         const timerId = setTimeout(() => {

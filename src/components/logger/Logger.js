@@ -1,9 +1,9 @@
 import React from 'react';
 import './Logger.css';
-import {useNoteContext} from '../../contexts/NoteContext';
+import {useLoggerContext} from '../../contexts/LoggerContext';
 
 const Logger = () => {
-    const {notes} = useNoteContext();
+    const {notes} = useLoggerContext();
     return (
         <div className="logger">
             {notes.map((note, i) => {
