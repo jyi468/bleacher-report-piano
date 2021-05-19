@@ -1,10 +1,12 @@
 import './Piano.css';
 import React, {useEffect, useState} from 'react';
 import {hasAccidental} from '../../utils/noteUtils';
+import {useNoteContext} from '../../contexts/NoteContext';
 
 const Key = ({note, octave}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
     const [invert, setInvert] = useState(false);
+    const {notes, setNotes, limit} = useNoteContext();
 
     useEffect(() => {
         const timerId = setTimeout(() => {
@@ -16,9 +18,17 @@ const Key = ({note, octave}) => {
         };
     }, [invert]);
 
+    useEffect(() => {
+
+    }, [limit]);
+
     const handleOnClick = () => {
         setInvert(true);
-        // Log using context
+        let newNotes = [`${note}`, ...notes];
+        if (limit && newNotes.length === limit) {
+            newNotes.pop();
+        }
+        setNotes(newNotes);
     };
 
     const renderClasses = () => {

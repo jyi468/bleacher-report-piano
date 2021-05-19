@@ -9,11 +9,13 @@ body {
 
 .app {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.pianoLog {
+.piano-log {
     display: flex;
     flex-direction: column;
-    justify-items: center;
+    justify-content: center;
     align-items: center;
 }
