@@ -3,10 +3,10 @@ import React, {useContext, createContext, useState} from 'react';
 const LoggerContext = createContext(null);
 
 export const LoggerProvider = ({children}) => {
-    const [notes, setNotes] = useState([]);
+    const [loggerNotes, setLoggerNotes] = useState([]);
     const [limit, setLimit] = useState(null);
     return (
-        <LoggerContext.Provider value={{notes, setNotes, limit, setLimit}}>
+        <LoggerContext.Provider value={{loggerNotes, setLoggerNotes, limit, setLimit}}>
             {children}
         </LoggerContext.Provider>
     )
