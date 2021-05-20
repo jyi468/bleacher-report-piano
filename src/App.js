@@ -1,5 +1,5 @@
 import './App.css';
-import {NoteProvider} from './contexts/LoggerContext';
+import {LoggerProvider} from './contexts/LoggerContext';
 import Piano from "./components/piano/Piano";
 import Logger from './components/logger/Logger';
 
@@ -7,10 +7,10 @@ function App() {
     return (
         <div className="app">
             <div className="piano-log">
-                <NoteProvider>
+                <LoggerProvider>
                     <Piano start="C4" end="B4"/>
                     <Logger/>
-                </NoteProvider>
+                </LoggerProvider>
             </div>
         </div>
     );

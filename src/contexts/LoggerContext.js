@@ -2,7 +2,7 @@ import React, {useContext, createContext, useState} from 'react';
 
 const LoggerContext = createContext(null);
 
-export const NoteProvider = ({children}) => {
+export const LoggerProvider = ({children}) => {
     const [notes, setNotes] = useState([]);
     const [limit, setLimit] = useState(null);
     return (
