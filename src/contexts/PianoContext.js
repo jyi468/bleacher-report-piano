@@ -2,6 +2,7 @@ import React, {useContext, createContext, useReducer} from 'react';
 
 /**
  * PianoContext keeps track of the state of the key presses (whether to invert the key colors)
+ * {'C4': {invert: true}, 'D4': {invert: false}, ...}
  */
 const PianoContext = createContext(null);
 

@@ -6,7 +6,7 @@ import {usePianoContext} from "../../contexts/PianoContext";
 
 const Key = ({note, octave}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
-    const {loggerNotes, setLoggerNotes, limit} = useLoggerContext();
+    const {addLoggerNote} = useLoggerContext();
     const [state, dispatch] = usePianoContext();
     const noteOctave = `${note}${octave}`;
 
@@ -16,28 +16,19 @@ const Key = ({note, octave}) => {
                 type: 'RELEASE_KEY',
                 payload: noteOctave
             });
-        }, 1000);
+        }, 300);
 
         return () => {
             clearTimeout(timerId);
         };
     }, [state[noteOctave]]);
 
-    useEffect(() => {
-
-    }, [limit]);
-
-    // TODO: Move to common logic to function in PianoContext
     const handleOnClick = () => {
         dispatch({
             type: 'PRESS_KEY',
             payload: noteOctave
         });
-        let newLoggerNotes = [`${note}`, ...loggerNotes];
-        if (limit && newLoggerNotes.length === limit) {
-            newLoggerNotes.pop();
-        }
-        setLoggerNotes(newLoggerNotes);
+        addLoggerNote(note);
     };
 
     const renderClasses = () => {
