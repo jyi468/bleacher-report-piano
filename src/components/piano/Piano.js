@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import Key from './Key';
 import {notesToNums, numsToNotes} from '../../constants/notes';
+import {connect} from 'react-redux';
 import {splitNoteOctave} from '../../utils/noteUtils';
-import {useLoggerContext} from "../../contexts/LoggerContext";
-import {usePianoContext} from "../../contexts/PianoContext";
+import {pressKey} from "../../actions";
 
-const Piano = ({start, end}) => {
+const Piano = ({start, end, pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
     const [endNote, endOctave] = splitNoteOctave(end);
     const [songNotes, setSongNotes] = useState([]);
-    const [state, dispatch] = usePianoContext();
-    const {addLoggerNote, loggerNotes} = useLoggerContext();
 
     /**
      * We render each Key based on the start and end inputs for the Piano using base 12.
@@ -40,12 +38,7 @@ const Piano = ({start, end}) => {
             if (!noteToPlay) {
                 return;
             }
-            // TODO: Fix logging
-            dispatch({
-                type: 'PRESS_KEY',
-                payload: `${noteToPlay}4` // We just default to octave 4 here unless we want to enable larger keyboards
-            });
-            addLoggerNote(noteToPlay);
+            pressKey(noteToPlay, 4);
             setTimeout(() => playNotes(rest), 1000);
         }
     };
@@ -60,4 +53,8 @@ const Piano = ({start, end}) => {
     );
 };
 
-export default Piano;
+const mapStateToProps = (state) => {
+    return {state: state};
+};
+
+export default connect(mapStateToProps, {pressKey})(Piano);

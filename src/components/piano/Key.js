@@ -1,38 +1,29 @@
 import './Piano.css';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import {connect} from "react-redux";
 import {hasAccidental} from '../../utils/noteUtils';
-import {useLoggerContext} from '../../contexts/LoggerContext';
-import {usePianoContext} from "../../contexts/PianoContext";
+import {pressKey, releaseKey} from "../../actions";
 
-const Key = ({note, octave}) => {
+const Key = ({note, octave, isInverted, pressKey, releaseKey}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
-    const {addLoggerNote} = useLoggerContext();
-    const [state, dispatch] = usePianoContext();
-    const noteOctave = `${note}${octave}`;
 
     useEffect(() => {
+        // TODO: Add action parameters to determine how long highlight is based on play or click
         const timerId = setTimeout(() => {
-            dispatch({
-                type: 'RELEASE_KEY',
-                payload: noteOctave
-            });
-        }, 300);
+            releaseKey(note, octave);
+        }, 1000);
 
         return () => {
             clearTimeout(timerId);
         };
-    }, [state[noteOctave]]);
-
-    const handleOnClick = () => {
-        dispatch({
-            type: 'PRESS_KEY',
-            payload: noteOctave
-        });
-        addLoggerNote(note);
-    };
+    }, [isInverted]);
 
     const renderClasses = () => {
-        return `key ${color} ${note} ${octave} ${state[noteOctave] && state[noteOctave].invert ? 'invert' : ''}`
+        return `key ${color} ${note} ${octave} ${isInverted ? 'invert' : ''}`
+    };
+
+    const handleOnClick = () => {
+        pressKey(note, octave);
     };
 
     return (
@@ -43,4 +34,9 @@ const Key = ({note, octave}) => {
 
 };
 
-export default Key;
+const mapStateToProps = (state, {note, octave}) => {
+    let key = state.piano[`${note}${octave}`];
+    return {isInverted: key ? key.isInverted : false};
+};
+
+export default connect(mapStateToProps, {pressKey, releaseKey})(Key);

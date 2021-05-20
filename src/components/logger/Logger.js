@@ -1,9 +1,8 @@
 import React from 'react';
 import './Logger.css';
-import {useLoggerContext} from '../../contexts/LoggerContext';
+import {connect} from 'react-redux';
 
-const Logger = () => {
-    const {loggerNotes} = useLoggerContext();
+const Logger = ({loggerNotes}) => {
     return (
         <div className="logger">
             {loggerNotes.map((note, i) => {
@@ -15,4 +14,8 @@ const Logger = () => {
     )
 };
 
-export default Logger;
+const mapStateToProps = (state) => {
+    return {loggerNotes: state.logger};
+};
+
+export default connect(mapStateToProps, null)(Logger);
