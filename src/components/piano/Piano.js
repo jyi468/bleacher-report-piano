@@ -55,7 +55,7 @@ const Piano = ({start, end}) => {
         <div className="piano">
             {renderKeys()}
             <input value={songNotes} onChange={onNotesChange}/>
-            <button onClick={() => playNotes(...songNotes)}/>
+            <button onClick={() => playNotes([...songNotes])}/>
         </div>
     );
 };
