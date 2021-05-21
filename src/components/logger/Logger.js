@@ -8,15 +8,15 @@ const Logger = ({pianoId, loggerNotes, initializeLogger, clearLogger}) => {
         initializeLogger(pianoId);
     }, []);
 
-    const renderLoggerNotes = () => {
+    const renderLogger = () => {
         if (!loggerNotes || !loggerNotes.length) {
-            return <h3 className="logger-item">Play Something!</h3>;
+            return <h3>Play Something!</h3>;
         }
-        return loggerNotes.map((note, i) => {
-            return (
-                <h3 key={i} className="logger-item">{`${note}`}</h3>
-            );
-        });
+        return (
+            <div className="log">
+                {loggerNotes.map((note, i) => <h3 key={i} className="logger-item">{`${note}`}</h3>)}
+            </div>
+        )
     };
 
     const handleClick = (e) => {
@@ -27,9 +27,7 @@ const Logger = ({pianoId, loggerNotes, initializeLogger, clearLogger}) => {
         <div className="logger">
             <a className="clear-log-btn" onClick={handleClick}>Clear Log</a>
             <br/>
-            <div className="log">
-                {renderLoggerNotes()}
-            </div>
+            {renderLogger()}
         </div>
     )
 };
