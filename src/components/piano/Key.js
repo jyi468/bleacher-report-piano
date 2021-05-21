@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import {connect} from "react-redux";
 import {hasAccidental} from '../../utils/noteUtils';
 import {pressKey, releaseKey} from "../../actions";
+import synth from '../../utils/synth';
 
 const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
@@ -26,8 +27,13 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
         pressKey(note, octave, pianoId);
     };
 
+    const synthEvents = {
+        onMouseDown: () => synth.triggerAttack(`${note}${octave}`),
+        onMouseUp: () => synth.triggerRelease()
+    };
+
     return (
-        <div onClick={handleOnClick} className={renderClasses()}>
+        <div onClick={handleOnClick} className={renderClasses()} {...synthEvents}>
             <h3 className="note">{note}</h3>
         </div>
     );

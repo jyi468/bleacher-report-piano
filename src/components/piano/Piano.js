@@ -5,7 +5,7 @@ import Key from './Key';
 import {notesToNums, numsToNotes} from '../../constants/notes';
 import {splitNoteOctave} from '../../utils/noteUtils';
 import {pressKey, initializePiano} from "../../actions";
-import {required, pattern, composeValidators} from '../../utils/validators';
+import {required, pattern} from '../../utils/validators';
 
 const Piano = ({id, start, end, pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
