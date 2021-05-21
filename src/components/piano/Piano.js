@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import * as Tone from 'tone';
 import _ from 'lodash';
 import {connect} from 'react-redux';
 import Key from './Key';
@@ -7,6 +8,7 @@ import {splitNoteOctave} from '../../utils/noteUtils';
 import {pressKey, initializePiano} from "../../actions";
 import {required, pattern} from '../../utils/validators';
 import synth from "../../utils/synth";
+import twinkle from '../../res/twinkle.json';
 
 const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
@@ -97,6 +99,21 @@ const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
         }
     };
 
+    const handleSongClick = () => {
+        const now = Tone.now() + 0.5;
+        twinkle.tracks.forEach((track) => {
+            track.notes.forEach((note) => {
+                let foo = synth.triggerAttackRelease(
+                    note.name,
+                    note.duration,
+                    note.time + now,
+                    note.velocity
+                );
+                console.log();
+            });
+        });
+    };
+
     return (
         <>
             <div className="piano">
@@ -105,6 +122,9 @@ const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
             <div className="player">
                 <input ref={inputRef} value={songNotes} onChange={onNotesChange}/>
                 <a onClick={handleClick}>Play</a>
+            </div>
+            <div className="songs">
+                <a onClick={handleSongClick}>Twinkle Twinkle Little Star</a>
             </div>
             <div className="error">
                 <span>{showError()}</span>
