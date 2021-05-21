@@ -7,13 +7,20 @@ const Logger = ({pianoId, loggerNotes, initializeLogger}) => {
     useEffect(() => {
         initializeLogger(pianoId);
     }, []);
+
+    const renderLoggerNotes = () => {
+        if (!loggerNotes || !loggerNotes.length) {
+            return <h3 className="logger-item">Play Something!</h3>;
+        }
+        return loggerNotes.map((note, i) => {
+            return (
+                <h3 key={i} className="logger-item">{`${note}`}</h3>
+            );
+        });
+    };
     return (
         <div className="logger">
-            {loggerNotes.map((note, i) => {
-                return (
-                    <h3 key={i} className="logger-item">{`${note}`}</h3>
-                );
-            })}
+            {renderLoggerNotes()}
         </div>
     )
 };
