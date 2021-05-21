@@ -1,12 +1,14 @@
 import './Piano.css';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {connect} from "react-redux";
 import {hasAccidental} from '../../utils/noteUtils';
-import {pressKey, releaseKey} from "../../actions";
+import {pressKey, releaseKey, setIsMouseDown} from "../../actions";
 import synth from '../../utils/synth';
 
-const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
+const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey, setIsMouseDown, isMouseDown}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
+    const keyRef = useRef();
+    const [isPressed, setIsPressed] = useState(false);
 
     useEffect(() => {
         // TODO: Add action parameters to determine how long highlight is based on play or click
@@ -23,17 +25,47 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
         return `key ${color} ${note} ${octave} ${isInverted ? 'invert' : ''}`
     };
 
-    const handleOnClick = () => {
-        pressKey(note, octave, pianoId);
+    const onPress = () => {
+        if (!isPressed) {
+            pressKey(note, octave, pianoId);
+            setIsPressed(true);
+            setIsMouseDown(true);
+            if (keyRef.current) {
+                keyRef.current.classList.add("active");
+            }
+            synth.triggerAttack(note + octave);
+        }
     };
 
-    const synthEvents = {
-        onMouseDown: () => synth.triggerAttack(`${note}${octave}`),
-        onMouseUp: () => synth.triggerRelease()
+    const onRelease = () => {
+        setIsPressed(false);
+        setIsMouseDown(false);
+        if (keyRef.current) {
+            keyRef.current.classList.remove("active");
+        }
+        synth.triggerRelease();
+    };
+
+    const onMouseUp = () => {
+        onRelease();
+        setIsMouseDown(false);
+    };
+
+    const onMouseEnter = () => {
+        if (isMouseDown) {
+            onPress();
+        }
+    };
+
+    const mouseEvents = {
+        onMouseDown: () => onPress(),
+        onMouseUp: () => onMouseUp(),
+        onMouseLeave: () => onRelease(),
+        onMouseEnter: () => onMouseEnter()
     };
 
     return (
-        <div onClick={handleOnClick} className={renderClasses()} {...synthEvents}>
+        <div ref={keyRef} className={renderClasses()} {...mouseEvents}>
             <h3 className="note">{note}</h3>
         </div>
     );
@@ -43,7 +75,7 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
 const mapStateToProps = (state, {note, octave, pianoId}) => {
     let pianoState = state.piano[pianoId] ?? {};
     let keyState = pianoState[`${note}${octave}`] ?? {};
-    return {isInverted: keyState.isInverted ?? false};
+    return {isInverted: keyState.isInverted ?? false, isMouseDown: state.mouse.isMouseDown};
 };
 
-export default connect(mapStateToProps, {pressKey, releaseKey})(Key);
+export default connect(mapStateToProps, {pressKey, releaseKey, setIsMouseDown})(Key);

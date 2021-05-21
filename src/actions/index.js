@@ -44,3 +44,10 @@ export const clearLogger = (pianoId) => {
         }
     }
 };
+
+export const setIsMouseDown = (isMouseDown) => {
+    return {
+        type: 'SET_MOUSE_DOWN',
+        payload: isMouseDown
+    }
+};
