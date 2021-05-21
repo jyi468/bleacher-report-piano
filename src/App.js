@@ -10,7 +10,7 @@ function App() {
                 <Logger pianoId="1"/>
             </div>
             <div className="piano-log">
-                <Piano id="2" start="C4" end="B4"/>
+                <Piano id="2" start="C4" end="B5"/>
                 <Logger pianoId="2"/>
             </div>
         </div>

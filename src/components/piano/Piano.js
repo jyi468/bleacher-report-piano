@@ -28,13 +28,13 @@ const Piano = ({id, start, end, pressKey}) => {
         }
         return keys;
     };
-    
+
     const onNotesChange = (e) => {
         if (e.target.value) {
             setSongNotes(e.target.value.split(','))
         }
     };
-    
+
     const playNotes = (notesToPlay) => {
         if (notesToPlay && notesToPlay.length) {
             const [noteToPlay, ...rest] = notesToPlay;
@@ -48,11 +48,18 @@ const Piano = ({id, start, end, pressKey}) => {
 
 
     return (
-        <div className="piano">
-            {renderKeys()}
-            <input value={songNotes} onChange={onNotesChange}/>
-            <button onClick={() => playNotes([...songNotes])}/>
-        </div>
+        <>
+            <div className="piano">
+                {renderKeys()}
+            </div>
+            <div className="player">
+                <input value={songNotes} onChange={onNotesChange}/>
+                <a onClick={(e) => {
+                    e.preventDefault();
+                    playNotes([...songNotes])
+                }}>Play</a>
+            </div>
+        </>
     );
 };
 
