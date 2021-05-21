@@ -1,8 +1,12 @@
-import React from 'react';
-import './Logger.css';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
+import './Logger.css';
+import {initializeLogger} from '../../actions';
 
-const Logger = ({loggerNotes}) => {
+const Logger = ({pianoId, loggerNotes, initializeLogger}) => {
+    useEffect(() => {
+        initializeLogger(pianoId);
+    }, []);
     return (
         <div className="logger">
             {loggerNotes.map((note, i) => {
@@ -14,8 +18,8 @@ const Logger = ({loggerNotes}) => {
     )
 };
 
-const mapStateToProps = (state) => {
-    return {loggerNotes: state.logger};
+const mapStateToProps = (state, ownProps) => {
+    return {loggerNotes: state.logger[ownProps.pianoId] ?? []};
 };
 
-export default connect(mapStateToProps, null)(Logger);
+export default connect(mapStateToProps, {initializeLogger})(Logger);

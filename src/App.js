@@ -6,8 +6,12 @@ function App() {
     return (
         <div className="app">
             <div className="piano-log">
-                <Piano start="C4" end="B4"/>
-                <Logger/>
+                <Piano id="1" start="C4" end="B4"/>
+                <Logger pianoId="1"/>
+            </div>
+            <div className="piano-log">
+                <Piano id="2" start="C4" end="B4"/>
+                <Logger pianoId="2"/>
             </div>
         </div>
     );

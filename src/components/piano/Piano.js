@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Key from './Key';
 import {notesToNums, numsToNotes} from '../../constants/notes';
 import {connect} from 'react-redux';
 import {splitNoteOctave} from '../../utils/noteUtils';
-import {pressKey} from "../../actions";
+import {pressKey, initializePiano} from "../../actions";
 
-const Piano = ({start, end, pressKey}) => {
+const Piano = ({id, start, end, pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
     const [endNote, endOctave] = splitNoteOctave(end);
     const [songNotes, setSongNotes] = useState([]);
+    useEffect(() => {
+        initializePiano(id);
+    }, []);
 
     /**
      * We render each Key based on the start and end inputs for the Piano using base 12.
@@ -21,7 +24,7 @@ const Piano = ({start, end, pressKey}) => {
         for (let i = startOctave * 12 + notesToNums[startNote]; i <= endOctave * 12 + notesToNums[endNote]; i++) {
             const note = numsToNotes[i % 12];
             const octave = Math.floor(i / 12);
-            keys.push(<Key key={i} note={note} octave={octave}/>)
+            keys.push(<Key key={i} note={note} octave={octave} pianoId={id}/>)
         }
         return keys;
     };
@@ -38,7 +41,7 @@ const Piano = ({start, end, pressKey}) => {
             if (!noteToPlay) {
                 return;
             }
-            pressKey(noteToPlay, 4);
+            pressKey(noteToPlay, 4, id);
             setTimeout(() => playNotes(rest), 1000);
         }
     };

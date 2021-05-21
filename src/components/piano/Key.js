@@ -4,13 +4,13 @@ import {connect} from "react-redux";
 import {hasAccidental} from '../../utils/noteUtils';
 import {pressKey, releaseKey} from "../../actions";
 
-const Key = ({note, octave, isInverted, pressKey, releaseKey}) => {
+const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
 
     useEffect(() => {
         // TODO: Add action parameters to determine how long highlight is based on play or click
         const timerId = setTimeout(() => {
-            releaseKey(note, octave);
+            releaseKey(note, octave, pianoId);
         }, 1000);
 
         return () => {
@@ -23,7 +23,7 @@ const Key = ({note, octave, isInverted, pressKey, releaseKey}) => {
     };
 
     const handleOnClick = () => {
-        pressKey(note, octave);
+        pressKey(note, octave, pianoId);
     };
 
     return (
@@ -34,9 +34,9 @@ const Key = ({note, octave, isInverted, pressKey, releaseKey}) => {
 
 };
 
-const mapStateToProps = (state, {note, octave}) => {
-    let key = state.piano[`${note}${octave}`];
-    return {isInverted: key ? key.isInverted : false};
+const mapStateToProps = (state, {note, octave, id}) => {
+    let pianoState = state.piano[id] ?? {};
+    return {isInverted: pianoState.isInverted ?? false};
 };
 
 export default connect(mapStateToProps, {pressKey, releaseKey})(Key);
