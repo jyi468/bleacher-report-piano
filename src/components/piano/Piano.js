@@ -1,14 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import _ from 'lodash';
+import {connect} from 'react-redux';
 import Key from './Key';
 import {notesToNums, numsToNotes} from '../../constants/notes';
-import {connect} from 'react-redux';
 import {splitNoteOctave} from '../../utils/noteUtils';
 import {pressKey, initializePiano} from "../../actions";
+import {required, pattern, composeValidators} from '../../utils/validators';
 
 const Piano = ({id, start, end, pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
     const [endNote, endOctave] = splitNoteOctave(end);
     const [songNotes, setSongNotes] = useState([]);
+    const [errors, setErrors] = useState({});
+    const inputRef = useRef();
+
     useEffect(() => {
         initializePiano(id);
     }, []);
@@ -31,7 +36,45 @@ const Piano = ({id, start, end, pressKey}) => {
 
     const onNotesChange = (e) => {
         if (e.target.value) {
-            setSongNotes(e.target.value.split(','))
+            setSongNotes(e.target.value.toUpperCase().split(','));
+        } else {
+            setSongNotes([]);
+        }
+    };
+
+    const csvValidator = pattern(/^[A-G][#]?(,[A-G][#]?)*$/, 'You need to enter comma-separated values.');
+
+    const handleValidation = () => {
+        let newErrors = {};
+        const input = inputRef.current.value;
+
+        const requiredError = required(input);
+        if (requiredError) {
+            newErrors.required = requiredError;
+        }
+
+        const csvError = csvValidator(input);
+        if (csvError) {
+            newErrors.csv = csvError;
+        }
+
+        setErrors(newErrors);
+        return newErrors;
+    };
+
+    const showError = () => {
+        if (!_.isEmpty(errors)) {
+            return errors[Object.keys(errors)[0]];
+        }
+    };
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        const newErrors = handleValidation();
+        if (_.isEmpty(newErrors)) {
+            playNotes([...songNotes]);
+            inputRef.current.value = "";
+            setSongNotes([]);
         }
     };
 
@@ -46,18 +89,17 @@ const Piano = ({id, start, end, pressKey}) => {
         }
     };
 
-
     return (
         <>
             <div className="piano">
                 {renderKeys()}
             </div>
             <div className="player">
-                <input value={songNotes} onChange={onNotesChange}/>
-                <a onClick={(e) => {
-                    e.preventDefault();
-                    playNotes([...songNotes])
-                }}>Play</a>
+                <input ref={inputRef} value={songNotes} onChange={onNotesChange}/>
+                <a onClick={handleClick}>Play</a>
+            </div>
+            <div className="error">
+                <span>{showError()}</span>
             </div>
         </>
     );

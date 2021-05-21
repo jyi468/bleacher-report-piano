@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import './Logger.css';
-import {initializeLogger} from '../../actions';
+import {initializeLogger, clearLogger} from '../../actions';
 
-const Logger = ({pianoId, loggerNotes, initializeLogger}) => {
+const Logger = ({pianoId, loggerNotes, initializeLogger, clearLogger}) => {
     useEffect(() => {
         initializeLogger(pianoId);
     }, []);
@@ -18,9 +18,18 @@ const Logger = ({pianoId, loggerNotes, initializeLogger}) => {
             );
         });
     };
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        clearLogger(pianoId);
+    };
     return (
         <div className="logger">
-            {renderLoggerNotes()}
+            <a className="clear-log-btn" onClick={handleClick}>Clear Log</a>
+            <br/>
+            <div className="log">
+                {renderLoggerNotes()}
+            </div>
         </div>
     )
 };
@@ -29,4 +38,4 @@ const mapStateToProps = (state, ownProps) => {
     return {loggerNotes: state.logger[ownProps.pianoId] ?? []};
 };
 
-export default connect(mapStateToProps, {initializeLogger})(Logger);
+export default connect(mapStateToProps, {initializeLogger, clearLogger})(Logger);

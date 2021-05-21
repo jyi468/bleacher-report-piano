@@ -9,6 +9,7 @@ const loggerReducer = (state={}, action) => {
         case 'PRESS_KEY':
             const newLogs = [...state[pianoId], `${splitNoteOctave(note)[0]}`];
             return {...state, [pianoId]: newLogs};
+        case 'CLEAR_LOGGER':
         case 'INITIALIZE_LOGGER':
             return {...state, [pianoId]: []};
         default:

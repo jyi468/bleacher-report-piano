@@ -35,3 +35,12 @@ export const initializePiano = (pianoId) => {
         }
     }
 };
+
+export const clearLogger = (pianoId) => {
+    return {
+        type: 'CLEAR_LOGGER',
+        payload: {
+            pianoId
+        }
+    }
+};
