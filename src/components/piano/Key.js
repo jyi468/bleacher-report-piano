@@ -34,9 +34,10 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey}) => {
 
 };
 
-const mapStateToProps = (state, {note, octave, id}) => {
-    let pianoState = state.piano[id] ?? {};
-    return {isInverted: pianoState.isInverted ?? false};
+const mapStateToProps = (state, {note, octave, pianoId}) => {
+    let pianoState = state.piano[pianoId] ?? {};
+    let keyState = pianoState[`${note}${octave}`] ?? {};
+    return {isInverted: keyState.isInverted ?? false};
 };
 
 export default connect(mapStateToProps, {pressKey, releaseKey})(Key);
