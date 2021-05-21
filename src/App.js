@@ -4,17 +4,17 @@ import Logger from './components/logger/Logger';
 
 function App() {
     const pianos = [
-        {start: 'C4', end: 'B4'},
-        {start: 'C4', end: 'B4'}
+        {singleOctave: true}, // If passing singleOctave param, do not specify anything else!
+        {start: 'C3', end: 'B5'}
     ];
     return (
         <div className="app">
             {pianos.map((config, i) => {
-                const {start, end} = config;
+                const {start, end, singleOctave} = config;
                 return (
                     <div key={i} className="piano-log">
-                        <Piano id={i} start={start} end={end}/>
-                        <Logger pianoId={i}/>
+                        <Piano id={i} start={start} end={end} singleOctave={singleOctave}/>
+                        <Logger pianoId={i} singleOctave={singleOctave}/>
                     </div>
                 );
             })}

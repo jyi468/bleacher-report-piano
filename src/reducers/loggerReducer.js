@@ -1,5 +1,3 @@
-import {splitNoteOctave} from '../utils/noteUtils';
-
 const loggerReducer = (state={}, action) => {
     if (!action.payload) {
         return state;
@@ -7,7 +5,7 @@ const loggerReducer = (state={}, action) => {
     const {pianoId, note} = action.payload;
     switch (action.type) {
         case 'PRESS_KEY':
-            const newLogs = [...state[pianoId], `${splitNoteOctave(note)[0]}`];
+            const newLogs = [...state[pianoId], note];
             return {...state, [pianoId]: newLogs};
         case 'CLEAR_LOGGER':
         case 'INITIALIZE_LOGGER':

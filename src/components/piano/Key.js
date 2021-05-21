@@ -5,7 +5,7 @@ import {hasAccidental} from '../../utils/noteUtils';
 import {pressKey, releaseKey, setIsMouseDown} from "../../actions";
 import synth from '../../utils/synth';
 
-const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey, setIsMouseDown, isMouseDown}) => {
+const Key = ({note, octave, singleOctave, pianoId, isInverted, pressKey, releaseKey, setIsMouseDown, isMouseDown}) => {
     const color = hasAccidental(note) ? 'black' : 'white';
     const keyRef = useRef();
     const [isPressed, setIsPressed] = useState(false);
@@ -13,7 +13,7 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey, setIsMous
     useEffect(() => {
         // TODO: Add action parameters to determine how long highlight is based on play or click
         const timerId = setTimeout(() => {
-            releaseKey(note, octave, pianoId);
+            releaseKey(`${note}${octave}`, pianoId);
         }, 1000);
 
         return () => {
@@ -27,7 +27,7 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey, setIsMous
 
     const onPress = () => {
         if (!isPressed) {
-            pressKey(note, octave, pianoId);
+            pressKey(`${note}${octave}`, pianoId);
             setIsPressed(true);
             setIsMouseDown(true);
             if (keyRef.current) {
@@ -66,7 +66,7 @@ const Key = ({note, octave, pianoId, isInverted, pressKey, releaseKey, setIsMous
 
     return (
         <div ref={keyRef} className={renderClasses()} {...mouseEvents}>
-            <h3 className="note">{note}</h3>
+            <h4 className="note">{singleOctave ? note : `${note}${octave}`}</h4>
         </div>
     );
 

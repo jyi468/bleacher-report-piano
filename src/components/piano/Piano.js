@@ -8,7 +8,7 @@ import {pressKey, initializePiano} from "../../actions";
 import {required, pattern} from '../../utils/validators';
 import synth from "../../utils/synth";
 
-const Piano = ({id, start, end, pressKey}) => {
+const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
     const [endNote, endOctave] = splitNoteOctave(end);
     const [songNotes, setSongNotes] = useState([]);
@@ -30,7 +30,7 @@ const Piano = ({id, start, end, pressKey}) => {
         for (let i = startOctave * 12 + notesToNums[startNote]; i <= endOctave * 12 + notesToNums[endNote]; i++) {
             const note = numsToNotes[i % 12];
             const octave = Math.floor(i / 12);
-            keys.push(<Key key={i} note={note} octave={octave} pianoId={id}/>)
+            keys.push(<Key key={i} note={note} octave={octave} pianoId={id} singleOctave={singleOctave}/>)
         }
         return keys;
     };
@@ -43,7 +43,9 @@ const Piano = ({id, start, end, pressKey}) => {
         }
     };
 
-    const csvValidator = pattern(/^[A-G][#]?(,[A-G][#]?)*$/, 'You need to enter comma-separated values.');
+    const csvValidator =  singleOctave ?
+        pattern(/^[A-G][#]?(,[A-G][#]?)*$/, 'You need to enter comma-separated notes.') :
+        pattern(/^([A-G][#]?[1-9])(,[A-G][#]?[1-9])*$/, 'You need to enter comma-separated notes with octave values. Example: C#4,F#4,A3');
 
     const handleValidation = () => {
         let newErrors = {};
@@ -81,12 +83,13 @@ const Piano = ({id, start, end, pressKey}) => {
 
     const playNotes = (notesToPlay) => {
         if (notesToPlay && notesToPlay.length) {
-            const [noteToPlay, ...rest] = notesToPlay;
-            if (!noteToPlay) {
+            const [note, ...rest] = notesToPlay;
+            if (!note) {
                 return;
             }
-            pressKey(noteToPlay, 4, id);
-            synth.triggerAttack(`${noteToPlay}4`);
+            const noteToPlay = singleOctave ? `${note}4` : note;
+            pressKey(noteToPlay, id);
+            synth.triggerAttack(noteToPlay);
             setTimeout(() => {
                 synth.triggerRelease();
                 playNotes(rest);

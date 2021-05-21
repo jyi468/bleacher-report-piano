@@ -1,19 +1,19 @@
-export const pressKey = (note, octave, pianoId) => {
+export const pressKey = (note, pianoId) => {
     return {
         type: 'PRESS_KEY',
         payload: {
             pianoId,
-            note: `${note}${octave}`
+            note
         }
     };
 };
 
-export const releaseKey = (note, octave, pianoId) => {
+export const releaseKey = (note, pianoId) => {
     return {
         type: 'RELEASE_KEY',
         payload: {
             pianoId,
-            note: `${note}${octave}`
+            note
         }
     }
 };
