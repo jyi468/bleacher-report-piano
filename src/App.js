@@ -5,7 +5,7 @@ import Logger from './components/logger/Logger';
 function App() {
     const pianos = [
         {start: 'C4', end: 'B4'},
-        {start: 'C2', end: 'B4'}
+        {start: 'C4', end: 'B4'}
     ];
     return (
         <div className="app">

@@ -6,6 +6,7 @@ import {notesToNums, numsToNotes} from '../../constants/notes';
 import {splitNoteOctave} from '../../utils/noteUtils';
 import {pressKey, initializePiano} from "../../actions";
 import {required, pattern} from '../../utils/validators';
+import synth from "../../utils/synth";
 
 const Piano = ({id, start, end, pressKey}) => {
     const [startNote, startOctave] = splitNoteOctave(start);
@@ -85,7 +86,11 @@ const Piano = ({id, start, end, pressKey}) => {
                 return;
             }
             pressKey(noteToPlay, 4, id);
-            setTimeout(() => playNotes(rest), 1000);
+            synth.triggerAttack(`${noteToPlay}4`);
+            setTimeout(() => {
+                synth.triggerRelease();
+                playNotes(rest);
+            }, 1000);
         }
     };
 
