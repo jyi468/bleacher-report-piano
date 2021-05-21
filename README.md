@@ -22,7 +22,7 @@ To see the application running on `localhost:3000`.
 - "Clear Log" button to clear logs
 
 # Potential Features
-
+- Debounced input validation on after key press
 - Keyboard mappings to keys
 - Playing preset melodies / songs
 - Preset instruments and controllable synth controls (Envelope, EQ, etc.);
