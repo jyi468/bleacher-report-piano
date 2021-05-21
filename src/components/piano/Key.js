@@ -33,7 +33,7 @@ const Key = ({note, octave, singleOctave, pianoId, isInverted, pressKey, release
             if (keyRef.current) {
                 keyRef.current.classList.add("active");
             }
-            synth.triggerAttack(note + octave);
+            synth.triggerAttack(`${note}${octave}`);
         }
     };
 
@@ -43,7 +43,7 @@ const Key = ({note, octave, singleOctave, pianoId, isInverted, pressKey, release
         if (keyRef.current) {
             keyRef.current.classList.remove("active");
         }
-        synth.triggerRelease();
+        synth.triggerRelease(`${note}${octave}`);
     };
 
     const onMouseUp = () => {

@@ -91,7 +91,7 @@ const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
             pressKey(noteToPlay, id);
             synth.triggerAttack(noteToPlay);
             setTimeout(() => {
-                synth.triggerRelease();
+                synth.triggerRelease(noteToPlay);
                 playNotes(rest);
             }, 1000);
         }

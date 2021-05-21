@@ -5,7 +5,7 @@ import Logger from './components/logger/Logger';
 function App() {
     const pianos = [
         {singleOctave: true}, // If passing singleOctave param, do not specify anything else!
-        {start: 'C3', end: 'B5'}
+        {start: 'C1', end: 'B3'}
     ];
     return (
         <div className="app">
