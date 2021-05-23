@@ -100,18 +100,34 @@ const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
     };
 
     const handleSongClick = () => {
+        Tone.Transport.PPQ = 960;
         const now = Tone.now() + 0.5;
         twinkle.tracks.forEach((track) => {
+            let byTime = _.groupBy(track.notes, 'time');
             track.notes.forEach((note) => {
-                let foo = synth.triggerAttackRelease(
+                Tone.Transport.schedule(() => {
+                    synth.triggerAttackRelease(
+                        note.name,
+                        note.duration,
+                        0,
+                        note.velocity
+                    );
+                    pressKey(note.name, id);
+                }, note.ticks + 'i');
+/*                synth.triggerAttackRelease(
                     note.name,
                     note.duration,
-                    note.time + now,
+                    note.ticks + 'i',
                     note.velocity
-                );
-                console.log();
+                )*/
             });
         });
+        Tone.start();
+        Tone.Transport.start();
+    };
+
+    const handleStopClick = () => {
+        synth.releaseAll();
     };
 
     return (
@@ -125,6 +141,7 @@ const Piano = ({id, singleOctave, start='C4', end='B4', pressKey}) => {
             </div>
             <div className="songs">
                 <a onClick={handleSongClick}>Twinkle Twinkle Little Star</a>
+                <a onClick={handleStopClick}>Stop</a>
             </div>
             <div className="error">
                 <span>{showError()}</span>
